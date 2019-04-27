@@ -10,6 +10,7 @@ app = flask.Flask(__name__)
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif'])
 
 def load():
+    """modelを読み込む"""
     model = load_model("mnist.h5", compile=False)
     return model
 
@@ -22,10 +23,12 @@ def help():
     return flask.jsonify(response)
 
 def allowed_file(filename):
+    """画像型の拡張子になっているか確認する"""
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def transform_img(img):
+    """読み込んだimageのshapeをMNISTのshape(28, 28)にする"""
     img = np.array(img).convert('L')
     width,height = 28, 28
     img = np.resize(img, (width,height))
@@ -52,5 +55,4 @@ def predict():
             
 
 if __name__ == '__main__':
-    # load()
     app.run()
