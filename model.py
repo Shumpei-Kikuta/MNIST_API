@@ -5,7 +5,6 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.optimizers import Adam
 import numpy as np
-from PIL import Image
 
 """
 input: 
@@ -17,7 +16,7 @@ y_test (shape = (N2, 10))
 
 # hyper parameter
 batch_size = 256
-epochs = 1
+epochs = 5
 
 def construct_network():
     model = Sequential()
@@ -55,19 +54,11 @@ if __name__ == '__main__':
     num_classes = 10
     x_train = x_train.reshape(60000, 28, 28, 1)
     x_train = x_train.astype('float32')
-    # x_test = x_test.reshape(10000, 28, 28, 1)
-    x_test = np.array(Image.open("two.jpg").convert('L'))
-    width,height = 28, 28
-    x_test = np.resize(x_test, (width,height))
-    x_test = x_test.reshape((1, width, height, 1))
+    x_test = x_test.reshape(10000, 28, 28, 1)
     x_test = x_test.astype('float32')
-    x_test /= 255
-    
-    # x_test = x_test.astype('float32')
     x_train /= 255
-    # x_test /= 255
+    x_test /= 255
     # one-hot encoding
     y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = np.array([[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]])
-    # y_test = keras.utils.to_categorical(y_test, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
     train(x_train, y_train, x_test, y_test)
