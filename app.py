@@ -2,7 +2,6 @@ from keras.models import load_model
 import flask
 import numpy as np
 from PIL import Image
-import tensorflow as tf
 from keras import backend as K
 
 
