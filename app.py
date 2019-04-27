@@ -13,11 +13,11 @@ def load():
     model = load_model("mnist.h5", compile=False)
     return model
 
-@app.route("/", methods = ["GET"])
+@app.route("/help", methods = ["GET"])
 def help():
     response = {"Content-Type": "application/json", 'help': None}
     if flask.request.method == "GET":
-        msg = 'exp. ```curl -F "file=[filename].jpg" "http://localhost:5000/"```'
+        msg = 'exp. curl -F "file=[filename].jpg" "http://localhost:5000/predict/"'
         response["help"] = msg
     return flask.jsonify(response)
 
@@ -28,7 +28,7 @@ def allowed_file(filename):
 
 def transform_img(img):
     """読み込んだimageのshapeをMNISTのshape(28, 28)にする"""
-    img = np.array(img).convert('L')
+    img = np.array(img.convert('L'))
     width,height = 28, 28
     img = np.resize(img, (width,height))
     img = img.reshape((1, width, height, 1))
@@ -36,7 +36,7 @@ def transform_img(img):
     img /= 255
     return img
 
-@app.route("/", methods=["POST"])
+@app.route("/predict", methods=["POST"])
 def predict():
     model = load()
     response = {"Content-Type": "application/json",
